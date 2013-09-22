@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Welcome to WebGL</title>
+		<style type="text/css">
+			* {
+			    font-family: Arial;
+			    font-style: italic;
+			}
+			
+			body {
+				background-color:#eeeeee;
+				color:#212121;
+			}
+			
+			#container {
+				z-index:-1;
+			}
+		</style>
+		<script type="text/javascript">
+			if ( !window.requestAnimationFrame ) {
+				window.requestAnimationFrame = ( function() {
+					return window.webkitRequestAnimationFrame ||
+					window.mozRequestAnimationFrame ||
+					window.oRequestAnimationFrame ||
+					window.msRequestAnimationFrame ||
+					function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+						window.setTimeout( callback, 1000 / 60 );
+					};
+				} )();
+			}
+		</script>
+		<script type="text/javascript" src="js/three.min.js"></script>
+		<script type="text/javascript">
+			var renderer = null,
+				scene = null,
+				camera = null,
+				cube = null,
+				animating = false;
+
+			function onLoad() {
+				var container = document.getElementById("container");
+				
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setSize(container.offsetWidth, container.offsetHeight);
+				container.appendChild( renderer.domElement );
+
+				scene = new THREE.Scene();
+
+				camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight, 1, 4000 );
+				camera.position.set( 0, 0, 3 );
+
+				var light = new THREE.DirectionalLight( 0xffffff, 1.5 );
+				light.position.set( 0, 0, 1 );
+				scene.add( light );
+
+				var mapUrl = "molumen_small_funny_angry_monster.jpg";
+				var map = THREE.ImageUtils.loadTexture(mapUrl);
+
+				var material = new THREE.MeshPhongMaterial({map: map});
+
+				var geometry = new THREE.CubeGeometry(1, 1, 1);
+
+				cube = new THREE.Mesh(geometry, material);
+
+				cube.rotation.x = Math.PI / 5;
+				cube.rotation.y = Math.PI / 5;
+
+				scene.add( cube );
+
+				addMouseHandler();
+
+				run();
+			}
+
+			function run () {
+				renderer.render( scene, camera );
+
+				if( animating ) {
+					cube.rotation.y -= 0.01;
+				}
+
+				requestAnimationFrame(run);
+			}
+
+
+			function addMouseHandler () {
+				var dom = renderer.domElement;
+				dom.addEventListener('mouseup', onMouseUp, false);
+			}
+
+			function onMouseUp (event) {
+				event.preventDefault();
+				animating = !animating;
+			}
+
+
+		</script>
+	</head>
+
+	<body onLoad="onLoad();" style="">
+		<center><h1>Welcome to WebGL!</h1></center>
+		<div id="container" style="width: 95%; height: 95%; position: absolute;"></div>
+		<center><div id="prompt" style="width: 95%; height: 6%; bottom: 0; position: absolute">
+			Click to animate the cube.
+		</div></center>
+	</body>
+</html>
