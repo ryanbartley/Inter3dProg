@@ -1,0 +1,3 @@
+[submodule "ClassWebSite"]
+	path = ClassWebSite
+	url = https://github.com/ryanbartley/Interactive3d.git
