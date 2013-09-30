@@ -1,3 +1,6 @@
 [submodule "ClassWebSite"]
 	path = ClassWebSite
 	url = https://github.com/ryanbartley/Interactive3d.git
+[submodule "ClassTestServer"]
+	path = classTestServer
+	url = https://github.com/ryanbartley/classTestServer.git
